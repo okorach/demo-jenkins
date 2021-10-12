@@ -14,3 +14,5 @@ comp-gradle/.classpath
 comp-gradle/.project
 comp-gradle/bin/
 comp-gradle/.settings/
+.vscode/launch.json
+.vscode/tasks.json
