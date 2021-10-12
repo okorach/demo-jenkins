@@ -1,0 +1,60 @@
+{
+  "issues": [
+    {
+      "engineId": "gdpr-check",
+      "ruleId": "gender-forbidden",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "effortMinutes": 5,
+      "primaryLocation": {
+        "message": "Compensation calculation based on gender is forbidden",
+        "filePath": "src/person.py",
+        "textRange": {
+          "startLine": 24,
+          "endLine": 27,
+          "startColumn": 11,
+          "endColumn": 45
+        }
+      }
+    },
+    {
+      "engineId": "gdpr-check",
+      "ruleId": "religion-forbidden",
+      "severity": "CRITICAL",
+      "type": "CODE_SMELL",
+      "effortMinutes": 5,
+      "primaryLocation": {
+        "message": "Storing religion is forbidden",
+        "filePath": "src/person.py",
+        "textRange": {
+          "startLine": 21,
+          "endLine": 21,
+          "startColumn": 8,
+          "endColumn": 32
+        }
+      },
+      "secondaryLocations": [
+        {
+          "message": "Religion field defined in object",
+          "filePath": "src/person.py",
+          "textRange": {
+            "startLine": 17,
+            "endLine": 17,
+            "startColumn": 8,
+            "endColumn": 21
+          }
+        },
+        {
+          "message": "Religion is stored",
+          "filePath": "src/person.py",
+          "textRange": {
+            "startLine": 21,
+            "endLine": 21,
+            "startColumn": 8,
+            "endColumn": 32
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+.scannerwork/
+build/
+.coverage
+**/__pycache__/
+.sonarqube/
+comp-dotnet/project/obj/
+comp-dotnet/project/bin/
+comp-maven/.settings/
+comp-maven/.classpath
+comp-maven/.project
+comp-gradle/.gradle/
+**/*.log
+comp-gradle/.classpath
+comp-gradle/.project
+comp-gradle/bin/
+comp-gradle/.settings/

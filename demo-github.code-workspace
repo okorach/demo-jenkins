@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"sonarlint.connectedMode.project": {
+			"connectionId": "SQ LATEST",
+			"projectKey": "demo:github-project"
+		}
+	}
+}
