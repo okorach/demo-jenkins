@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>demo</groupId>
-  <artifactId>github-jenkins-maven</artifactId>
+  <artifactId>github-mono-jenkins-maven</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>GitHub w/ Jenkins - Maven</name>
+  <name>GitHub mono w/ Jenkins - Maven</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
