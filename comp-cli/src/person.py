@@ -31,6 +31,7 @@ class Person:
 
     def happy_birthday(self):
         return "Happy birthday " + self.firstname
+        self.age += 1
 
     def is_major(self):
         return self.age > 18
