@@ -14,6 +14,11 @@ banditTool = 'bandit'
 pipeline {
   agent any
   stages {
+    stage('Code Checkout') {
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '**']], extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false]], userRemoteConfigs: [[credentialsId: 'github-app', url: 'https://github.com/okorach/demo-maven-jenkins']]])
+      }
+    }
     stage('Run tests') {
       steps {
         script {
