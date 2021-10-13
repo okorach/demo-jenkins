@@ -7,7 +7,7 @@
 	"settings": {
 		"sonarlint.connectedMode.project": {
 			"connectionId": "SQ LATEST",
-			"projectKey": "demo:github-project"
+			"projectKey": "demo:github-mono-jenkins-cli"
 		}
 	}
 }
