@@ -16,7 +16,7 @@ pipeline {
   stages {
     stage('Code Checkout') {
       steps {
-        checkout([$class: 'GitSCM', branches: [[name: '**']], extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false]], userRemoteConfigs: [[credentialsId: 'github-app', url: 'https://gitlab.com/okorach/demo-mono-jenkins']]])
+        checkout([$class: 'GitSCM', branches: [[name: '**']], extensions: [[$class: 'CloneOption', noTags: false, reference: '', shallow: false]], userRemoteConfigs: [[credentialsId: 'GitLabPAT2', url: 'https://gitlab.com/okorach/demo-mono-jenkins']]])
       }
     }
     stage('Run tests') {
