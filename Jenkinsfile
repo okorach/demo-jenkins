@@ -66,7 +66,7 @@ pipeline {
       steps {
         withSonarQubeEnv('SQ Latest') {
           script {
-            sh 'cd comp-maven; mvn sonar:sonar -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar -Dsonar.projectKey="demo:github-comp-maven" -Dsonar.projectName="GitHub project - Maven"'
+            sh 'cd comp-maven; mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar'
           }
         }
       }
