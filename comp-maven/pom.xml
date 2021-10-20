@@ -7,7 +7,7 @@
   <artifactId>github-mono-jenkins-maven</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>GitHub mono w/ Jenkins - Maven</name>
+  <name>GitHub / Jenkins / monorepo Maven</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
