@@ -9,10 +9,17 @@ pylintTool = 'pylint'
 flake8Tool = 'flake8'
 banditTool = 'bandit'
 
+tags = "github,jenkins,monorepo"
+projectRootKey = "demo:github-mono-jenkins"
+
 // rm -rf -- ${buildDir:?"."}/* .coverage */__pycache__ */*.pyc # mediatools/__pycache__  testpytest/__pycache__ testunittest/__pycache__
 
 pipeline {
   agent any
+  environment {
+      SONAR_HOST_URL  = credentials('SONAR_HOST_URL')
+      SONAR_TOKEN     = credentials('SONAR_TOKEN')
+  }
   stages {
     stage('Code Checkout') {
       steps {
@@ -46,7 +53,11 @@ pipeline {
         withSonarQubeEnv('SQ Latest') {
           script {
             def scannerHome = tool 'SonarScanner';
-            sh "cd comp-cli; ${scannerHome}/bin/sonar-scanner"
+            sh """
+              cd comp-cli
+              ${scannerHome}/bin/sonar-scanner
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-cli&tags=${tags},cli\"
+            """
           }
         }
       }
@@ -70,7 +81,8 @@ pipeline {
           script {
             sh """
               cd comp-maven
-              mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar
+              mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-maven&tags=${tags},maven\"
             """
           }
         }
@@ -93,7 +105,11 @@ pipeline {
       steps {
         withSonarQubeEnv('SQ Latest') {
           script {
-            sh 'cd comp-gradle; ./gradlew jacocoTestReport sonarqube'
+            sh """
+              cd comp-gradle
+              ./gradlew jacocoTestReport sonarqube
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-gradle&tags=${tags},gradle\"
+            """
           }
         }
       }
@@ -118,9 +134,10 @@ pipeline {
           withSonarQubeEnv('SQ Latest') {
             sh """
               cd comp-dotnet
-              /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll begin /k:\"demo:github-mono-jenkins-dotnet\" /n:\"GitHub / Jenkins / monorepo .Net Core\"
+              /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll begin /k:\"${projectRootKey}-dotnet\" /n:\"GitHub / Jenkins / monorepo .Net Core\"
               /usr/local/share/dotnet/dotnet build
               /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll end
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-dotnet&tags=${tags},dotnet\"
             """
           }
         }
