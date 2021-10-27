@@ -10,6 +10,7 @@ flake8Tool = 'flake8'
 banditTool = 'bandit'
 
 tags = "github,jenkins,monorepo"
+projectRootKey = "demo:github-mono-jenkins"
 
 // rm -rf -- ${buildDir:?"."}/* .coverage */__pycache__ */*.pyc # mediatools/__pycache__  testpytest/__pycache__ testunittest/__pycache__
 
@@ -55,7 +56,7 @@ pipeline {
             sh """
               cd comp-cli
               ${scannerHome}/bin/sonar-scanner
-              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=demo:github-mono-jenkins-cli&tags=${tags},cli\"
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-cli&tags=${tags},cli\"
             """
           }
         }
@@ -81,7 +82,7 @@ pipeline {
             sh """
               cd comp-maven
               mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar
-              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=demo:github-mono-jenkins-maven&tags=${tags},maven\"
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-maven&tags=${tags},maven\"
             """
           }
         }
@@ -107,7 +108,7 @@ pipeline {
             sh """
               cd comp-gradle
               ./gradlew jacocoTestReport sonarqube
-              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=demo:github-mono-jenkins-gradle&tags=${tags},gradle\"
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-gradle&tags=${tags},gradle\"
             """
           }
         }
@@ -133,10 +134,10 @@ pipeline {
           withSonarQubeEnv('SQ Latest') {
             sh """
               cd comp-dotnet
-              /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll begin /k:\"demo:github-mono-jenkins-dotnet\" /n:\"GitHub / Jenkins / monorepo .Net Core\"
+              /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll begin /k:\"${projectRootKey}-dotnet\" /n:\"GitHub / Jenkins / monorepo .Net Core\"
               /usr/local/share/dotnet/dotnet build
               /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll end
-              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=demo:github-mono-jenkins-dotnet&tags=${tags},dotnet\"
+              curl -X POST -u $SONAR_TOKEN: \"$SONAR_HOST_URL/api/project_tags/set?project=${projectRootKey}-dotnet&tags=${tags},dotnet\"
             """
           }
         }
