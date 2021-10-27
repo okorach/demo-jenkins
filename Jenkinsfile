@@ -22,10 +22,12 @@ pipeline {
     stage('Run tests') {
       steps {
         script {
-          echo "Run unit tests for coverage"
-          sh "cd comp-cli; ${coverageTool} run -m pytest"
-          echo "Generate XML report"
-          sh "pwd; cd comp-cli; ${coverageTool} xml -o ${coverageReport}"
+          echo "Run unit tests for coverage and generate XML report"
+          sh """
+            cd comp-cli
+            ${coverageTool} run -m pytest
+            ${coverageTool} xml -o ${coverageReport}
+          """
         }
       }
     }
@@ -66,7 +68,10 @@ pipeline {
       steps {
         withSonarQubeEnv('SQ Latest') {
           script {
-            sh 'cd comp-maven; mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar'
+            sh """
+              cd comp-maven
+              mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent install org.jacoco:jacoco-maven-plugin:report sonar:sonar
+            """
           }
         }
       }
@@ -111,11 +116,12 @@ pipeline {
         script {
           def dotnetScannerHome = tool 'Scanner for .Net Core'
           withSonarQubeEnv('SQ Latest') {
-            sh "cd comp-dotnet; /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll begin /k:\"demo:github-mono-jenkins-dotnet\" /n:\"GitHub / Jenkins / monorepo .Net Core\"" 
-            sh "cd comp-dotnet; /usr/local/share/dotnet/dotnet build"
-            updateGitlabCommitStatus name: 'jenkins', state: 'running'
-            sh "cd comp-dotnet; /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll end"
-            updateGitlabCommitStatus name: 'jenkins', state: 'running'
+            sh """
+              cd comp-dotnet
+              /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll begin /k:\"demo:github-mono-jenkins-dotnet\" /n:\"GitHub / Jenkins / monorepo .Net Core\"
+              /usr/local/share/dotnet/dotnet build
+              /usr/local/share/dotnet/dotnet ${dotnetScannerHome}/SonarScanner.MSBuild.dll end
+            """
           }
         }
       }
@@ -126,7 +132,6 @@ pipeline {
           script {
             def qg = waitForQualityGate()
             if (qg.status != 'OK') {
-              updateGitlabCommitStatus name: 'jenkins', state: 'failed'
               echo ".Net component quality gate failed: ${qg.status}, proceeding anyway"
             }
             sh 'rm -f comp-dotnet/.sonarqube/out/.sonar/report-task.txt'
